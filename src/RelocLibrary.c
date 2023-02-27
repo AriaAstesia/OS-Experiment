@@ -104,9 +104,9 @@ void reloclibrary(LinkMap *lib, int mode){
     	Elf64_Sym* symbol = symbol_table + (rela->r_info >> 32);
     	char* name = string_table + symbol->st_name;
     	void* address = search(lib, name);
-    	//printf("%s: %p = %p\n", name, (uint64_t*)(lib->addr + rela->r_offset + rela->r_addend), address);
+    	//printf("%s: %p = %p\n", name, (uint64_t*)(lib->addr + rela->r_offset), address + rela->r_addend);
     	if(address != NULL)
-		   	*(uint64_t*)(lib->addr + rela->r_offset + rela->r_addend) = address;
+		   	*(uint64_t*)(lib->addr + rela->r_offset) = address + rela->r_addend;
     	rela++;
     }
     if(!lib->dynInfo[DT_JMPREL])return;
@@ -118,17 +118,17 @@ void reloclibrary(LinkMap *lib, int mode){
     		Elf64_Sym* symbol = symbol_table + (rela->r_info >> 32);
 	    	char* name = string_table + symbol->st_name;
 	    	void* address = search(lib, name);
-    		//printf("%s: %p = %p\n", name, (uint64_t*)(lib->addr + rela->r_offset + rela->r_addend), address);
- 		   	//printf("%p = %p\n", (uint64_t*)(lib->addr + rela->r_offset + rela->r_addend), *(uint64_t*)(lib->addr + rela->r_offset + rela->r_addend) + lib->addr);
-		   	*(uint64_t*)(lib->addr + rela->r_offset + rela->r_addend) = *(uint64_t*)(lib->addr + rela->r_offset + rela->r_addend) + lib->addr;
+    		//printf("%s: %p = %p\n", name, (uint64_t*)(lib->addr + rela->r_offset), address + rela->r_addend);
+ 		   	//printf("%p = %p\n", (uint64_t*)(lib->addr + rela->r_offset), *(uint64_t*)(lib->addr + rela->r_offset) + lib->addr);
+		   	*(uint64_t*)(lib->addr + rela->r_offset) = *(uint64_t*)(lib->addr + rela->r_offset) + lib->addr;
 		   	continue;
     	}
     	Elf64_Sym* symbol = symbol_table + (rela->r_info >> 32);
     	char* name = string_table + symbol->st_name;
     	void* address = search(lib, name);
-    	//printf("%s: %p = %p\n", name, (uint64_t*)(lib->addr + rela->r_offset + rela->r_addend), address);
+    	//printf("%s: %p = %p\n", name, (uint64_t*)(lib->addr + rela->r_offset), address + rela->r_addend);
     	if(address != NULL)
-		   	*(uint64_t*)(lib->addr + rela->r_offset + rela->r_addend) = address;
+		   	*(uint64_t*)(lib->addr + rela->r_offset) = address + rela->r_addend;
     	rela++;
     }
 }
